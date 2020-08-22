@@ -7,25 +7,43 @@ message("install path: ${CMAKE_INSTALL_PREFIX}")
 option(EXPORT_SYMBOL_DEFAULT "whether to use __attribute_default_ for library symbol" ON)
 
 if (EXPORT_SYMBOL_DEFAULT)
-    add_definitions(-DEXPORT_SYMBOL_DEFAULT)
+    add_definitions(-DEXPORT_SYMBOL_DEFAULT=1)
+elseif()
+    add_definitions(-DEXPORT_SYMBOL_DEFAULT=0)
 endif()
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 add_subdirectory(add_library)
+add_subdirectory(mul_library)
 file(GLOB demo_src ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 
 add_executable(${PROJECT_NAME} ${demo_src})
 target_include_directories(${PROJECT_NAME} PUBLIC add_library)
+target_include_directories(${PROJECT_NAME} PUBLIC mul_library)
 target_link_libraries(${PROJECT_NAME} add)
-install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/bin})
+target_link_libraries(${PROJECT_NAME} mul)
+
+#install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+install(TARGETS ${PROJECT_NAME} add mul
+    RUNTIME DESTINATION ${CMAKE_INSTAL_BINDIR}
+    PERMISSIONS GROUP_EXECUTE OWNER_EXECUTE
+    LIBRARY DESTINATION ${CMAKE_INSTAL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTAL_LIBDIR}
+    )
 
 macro(do_test ARG1 ARG2 RESULT)
     add_test(NAME test_add_${ARG1}_${ARG2} COMMAND ${PROJECT_NAME} ${ARG1} ${ARG2})
     set_tests_properties(test_add_${ARG1}_${ARG2}
         PROPERTIES PASS_REGULAR_EXPRESSION ${RESULT})
 endmacro(do_test)
+
+macro(do_mul ARG1 ARG2 RESULT)
+    add_test(NAME test_mul_${ARG1}_${ARG2} COMMAND ${PROJECT_NAME} ${ARG1} ${ARG2})
+    set_tests_properties(test_mul_${ARG1}_${ARG2}
+        PROPERTIES PASS_REGULAR_EXPRESSION ${RESULT})
+endmacro(do_mul)
 
 macro(do_test1)
     add_test(test_example_no_args ${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME})
@@ -40,4 +58,8 @@ do_test(26 26 52)
 do_test(36 36 72)
 do_test(46 46 92)
 do_test1()
+do_mul(0 2 0)
+do_mul(1 2 2)
+do_mul(2 4 8)
+do_mul(25 25 625)
 enable_testing()

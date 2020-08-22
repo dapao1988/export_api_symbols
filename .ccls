@@ -4,3 +4,4 @@
 %c %cpp -pthread
 #%h %hpp --include=Global.h
 -Iadd_library
+-Imul_library
