@@ -34,6 +34,9 @@ install(TARGETS ${PROJECT_NAME} add mul
     ARCHIVE DESTINATION ${CMAKE_INSTAL_LIBDIR}
     )
 
+install(FILES ${PROJECT_SOURCE_DIR}/add_library/add.hpp DESTINATION include)
+install(FILES ${PROJECT_SOURCE_DIR}/mul_library/mul.hpp DESTINATION include)
+install(FILES ${PROJECT_SOURCE_DIR}/main.cpp DESTINATION sample)
 macro(do_test ARG1 ARG2 RESULT)
     add_test(NAME test_add_${ARG1}_${ARG2} COMMAND ${PROJECT_NAME} ${ARG1} ${ARG2})
     set_tests_properties(test_add_${ARG1}_${ARG2}
