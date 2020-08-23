@@ -1,3 +1,5 @@
 .ccls-cache
 *.swp
 build
+sub_library/libs
+sub_library/obj
