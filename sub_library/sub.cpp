@@ -11,6 +11,8 @@
 
 #include "sub.hpp"
 
+namespace cannon {
+
 template<typename T>
 Substraction<T>::Substraction(T a, T b) {
     this->a = a;
@@ -36,3 +38,5 @@ template class Substraction<short>;
 template class Substraction<int>;
 template class Substraction<float>;
 template class Substraction<double>;
+
+}

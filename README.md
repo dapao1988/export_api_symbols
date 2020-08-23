@@ -1,5 +1,4 @@
 # export_api_symbols
-------------
 
 ### Description
 This demo aims to show:
@@ -13,6 +12,6 @@ This demo aims to show:
 > to update somethings else...
 
 Author [@cannon][1]
-2020-08-01
+2020-08-21
 
 [1]: 591444375@qq.com

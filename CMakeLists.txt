@@ -18,16 +18,19 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 add_subdirectory(add_library)
 add_subdirectory(mul_library)
+add_subdirectory(sub_library)
 file(GLOB demo_src ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 
 add_executable(${PROJECT_NAME} ${demo_src})
 target_include_directories(${PROJECT_NAME} PUBLIC add_library)
 target_include_directories(${PROJECT_NAME} PUBLIC mul_library)
+target_include_directories(${PROJECT_NAME} PUBLIC sub_library)
 target_link_libraries(${PROJECT_NAME} add)
 target_link_libraries(${PROJECT_NAME} mul)
+target_link_libraries(${PROJECT_NAME} sub)
 
 #install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
-install(TARGETS ${PROJECT_NAME} add mul
+install(TARGETS ${PROJECT_NAME} add mul sub
     RUNTIME DESTINATION ${CMAKE_INSTAL_BINDIR}
     PERMISSIONS GROUP_EXECUTE OWNER_EXECUTE
     LIBRARY DESTINATION ${CMAKE_INSTAL_LIBDIR}
@@ -36,6 +39,7 @@ install(TARGETS ${PROJECT_NAME} add mul
 
 install(FILES ${PROJECT_SOURCE_DIR}/add_library/add.hpp DESTINATION include)
 install(FILES ${PROJECT_SOURCE_DIR}/mul_library/mul.hpp DESTINATION include)
+install(FILES ${PROJECT_SOURCE_DIR}/mul_library/sub.hpp DESTINATION include)
 install(FILES ${PROJECT_SOURCE_DIR}/main.cpp DESTINATION sample)
 macro(do_test ARG1 ARG2 RESULT)
     add_test(NAME test_add_${ARG1}_${ARG2} COMMAND ${PROJECT_NAME} ${ARG1} ${ARG2})
@@ -48,6 +52,12 @@ macro(do_mul ARG1 ARG2 RESULT)
     set_tests_properties(test_mul_${ARG1}_${ARG2}
         PROPERTIES PASS_REGULAR_EXPRESSION ${RESULT})
 endmacro(do_mul)
+
+macro(do_sub ARG1 ARG2 RESULT)
+    add_test(NAME test_sub_${ARG1}_${ARG2} COMMAND ${PROJECT_NAME} ${ARG1} ${ARG2})
+    set_tests_properties(test_sub_${ARG1}_${ARG2}
+        PROPERTIES PASS_REGULAR_EXPRESSION ${RESULT})
+endmacro(do_sub)
 
 macro(do_test_no_args)
     add_test(test_example_no_args ${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME})
@@ -66,4 +76,7 @@ do_mul(0 2 0)
 do_mul(1 2 2)
 do_mul(2 4 8)
 do_mul(25 25 625)
+do_sub(0 2 -2)
+do_sub(100 2 98)
+do_sub(100 0 100)
 enable_testing()

@@ -9,7 +9,7 @@ BUILD_TARGET=
 MODULE_NAME=
 
 function do_host_build() {
-    cd current_path
+    cd ${current_path}
     #rm -rf build
     mkdir -p build
     cd build

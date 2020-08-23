@@ -1,4 +1,4 @@
 
-file(GLOB_RECURSE mul_srcs *.cpp *.c)
-add_library(mul SHARED ${mul_srcs})
-target_include_directories(mul BEFORE PUBLIC ../common)
+file(GLOB_RECURSE sub_srcs *.cpp *.c)
+add_library(sub SHARED ${sub_srcs})
+target_include_directories(sub BEFORE PUBLIC ../common)
