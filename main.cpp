@@ -14,6 +14,7 @@
 #include "sub.hpp"
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 using namespace cannon;
 int main(int argc, char* argv[]) {
